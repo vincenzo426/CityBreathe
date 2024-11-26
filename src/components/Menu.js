@@ -44,7 +44,7 @@ const Menu = () => {
           {/* Statistiche */}
           <li>
             <Link
-              to="/statisitiche"
+              to="/statisitiche "
               className="block px-4 py-2 text-gray-800 hover:text-green-600"
               onClick={toggleMenu}
             >
