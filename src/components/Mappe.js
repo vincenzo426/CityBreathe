@@ -113,23 +113,25 @@ const Mappe = () => {
             <FaSearch className="mr-2" /> Cerca
           </button>
         </div>
-
-        <MapContainer
-          center={[44.4949, 11.3426]}
-          zoom={13}
-          className="w-full h-[29rem] rounded-lg shadow-md border-black border-2"
-          whenCreated={(mapInstance) => (mapRef.current = mapInstance)}
-        >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          {startCoords && <Marker position={startCoords} icon={redIcon} />}
-          {endCoords && <Marker position={endCoords} icon={redIcon} />}
-          {route.length > 0 && <Polyline positions={route} color="green" />}
-          {searchParks &&
-            poiMarkers.map((pos, index) => (
-              <Marker key={index} position={pos} icon={greenIcon} />
-            ))}
-        </MapContainer>
-
+        <div className="sticky top-0 z-10">
+          {" "}
+          {/* Aggiunto contenitore per mappa */}
+          <MapContainer
+            center={[44.4949, 11.3426]}
+            zoom={13}
+            className="w-full h-[29rem] rounded-lg shadow-md border-black border-2"
+            whenCreated={(mapInstance) => (mapRef.current = mapInstance)}
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            {startCoords && <Marker position={startCoords} icon={redIcon} />}
+            {endCoords && <Marker position={endCoords} icon={redIcon} />}
+            {route.length > 0 && <Polyline positions={route} color="green" />}
+            {searchParks &&
+              poiMarkers.map((pos, index) => (
+                <Marker key={index} position={pos} icon={greenIcon} />
+              ))}
+          </MapContainer>
+        </div>
         <MenuFooter />
       </div>
     </div>
