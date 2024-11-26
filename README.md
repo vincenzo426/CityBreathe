@@ -1,2 +1,0 @@
-# CityBreathe
-Demo applicazione CityBerathe
