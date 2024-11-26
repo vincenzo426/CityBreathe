@@ -3,7 +3,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 const Card = ({ citta, valoreAQI, valutazione }) => {
-  // Mappa colori AQI ciao
+  // Mappa colori AQI
   const AQI_COLORS = [
     { threshold: 50, color: "#22c55e" }, // Verde
     { threshold: 100, color: "#eab308" }, // Giallo
