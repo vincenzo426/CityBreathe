@@ -1,4 +1,5 @@
 import React, { useState, useRef, useContext } from "react";
+import { useNavigate } from "react-router-dom"; // Per navigazione
 import Header from "./Header";
 import MenuFooter from "./MenuFooter";
 import { CorsaContext } from "./CorsaContext"; // Importa il Context
@@ -8,7 +9,6 @@ import L from "leaflet";
 import startIcon from "../icons/start.png";
 import finishIcon from "../icons/finish-line.png";
 import { FaSearch } from "react-icons/fa";
-
 import {
   getCoordinates,
   getRoute,
@@ -19,6 +19,7 @@ import {
 import iconPark from "../icons/park.png";
 import startRun from "../icons/startRun.png";
 import racingFlag from "../icons/racing-flag.png";
+
 // Icona personalizzata per i marker
 const start = new L.Icon({
   iconUrl: startRun,
@@ -58,6 +59,8 @@ const Mappe = () => {
   const [endCoords, setEndCoords] = useState(null);
   const [poiMarkers, setPoiMarkers] = useState([]);
   const [isRunStarted, setIsRunStarted] = useState(false);
+  const [showDialog, setShowDialog] = useState(false); // Stato per gestire la finestra di dialogo
+  const navigate = useNavigate(); // Hook per navigazione
   const mapRef = useRef();
 
   const handleSearch = async () => {
@@ -90,6 +93,7 @@ const Mappe = () => {
       alert(error.message || "Errore durante la ricerca.");
     }
   };
+
   const handleRunToggle = () => {
     if (isRunStarted) {
       const minPerKm = Math.random() * (6 - 4) + 4; // Tempo medio tra 4 e 6 min/km
@@ -99,7 +103,6 @@ const Mappe = () => {
       // Calcola l'andamento della velocità
       const intervals = 10; // Numero di intervalli per il calcolo
       const intervalTime = totalTime / intervals; // Tempo per intervallo
-      // const intervalDistance = distance / intervals; // Distanza per intervallo
       const speedOverTime = Array.from({ length: intervals }, (_, i) => {
         const randomFluctuation = Math.random() * 0.5 - 0.25; // Variazione casuale tra -0.25 e 0.25 km/h
         const currentSpeed = (60 / (minPerKm + randomFluctuation)).toFixed(2);
@@ -118,6 +121,9 @@ const Mappe = () => {
         speedOverTime, // Salva l'andamento della velocità
       });
 
+      // Mostra la finestra di dialogo
+      setShowDialog(true);
+
       // Ripristina lo stato iniziale
       setStartAddress("");
       setDistance("");
@@ -135,7 +141,7 @@ const Mappe = () => {
       <div className="p-6">
         <div className="mb-4 p-4 bg-white shadow-md rounded">
           <h2 className="text-lg font-semibold mb-2">Cerca Percorso</h2>
-          <h1 className="text-sm  mb-2">
+          <h1 className="text-sm mb-2">
             Il percorso calcolato va inteso come andata e ritorno
           </h1>
           <div className="flex flex-col sm:flex-row gap-4">
@@ -189,7 +195,7 @@ const Mappe = () => {
                   <img
                     src={finishIcon}
                     alt="Descrizione"
-                    className="w-10 h-10 mr-2"
+                    className="w-8 h-8 mr-2"
                   />
                 ) : (
                   <img
@@ -214,7 +220,7 @@ const Mappe = () => {
           <MapContainer
             center={[44.4949, 11.3426]}
             zoom={13}
-            className="w-full h-[27rem] rounded-lg shadow-md border-black border-2"
+            className="w-full h-[25rem] rounded-lg shadow-md border-black border-2"
             whenCreated={(mapInstance) => (mapRef.current = mapInstance)}
           >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -229,6 +235,30 @@ const Mappe = () => {
         </div>
         <MenuFooter />
       </div>
+
+      {/* Finestra di dialogo */}
+      {showDialog && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-96 text-center">
+            <h2 className="text-xl font-semibold mb-4">
+              I dati della corsa sono stati salvati!
+            </h2>
+            <p className="mb-4">Puoi vederli nella sezione progressi.</p>
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              onClick={() => setShowDialog(false)}
+            >
+              Chiudi
+            </button>
+            <button
+                className="ml-5 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                onClick={() => navigate("/progressi")}
+              >
+                Vai ai progressi
+              </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
