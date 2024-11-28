@@ -120,8 +120,8 @@ export const getNearbyParks = async (startCoords, radius = 2000) => {
  */
 export const calculateDestination = (startCoords, distanceKm) => {
   const [startLat, startLng] = startCoords;
-
-  const distanceInDegrees = distanceKm / 111.32; // Conversione della distanza da km a gradi (1 grado ≈ 111.32 km).
+  let distanceDividecByTwo = distanceKm / 2;
+  const distanceInDegrees = distanceDividecByTwo / 111.32; // Conversione della distanza da km a gradi (1 grado ≈ 111.32 km).
 
   // Direzioni possibili per il calcolo
   const directions = ["north", "south", "east", "west"];

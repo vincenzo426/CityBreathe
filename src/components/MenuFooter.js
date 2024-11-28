@@ -1,5 +1,6 @@
 import React from "react";
 import { FaHome, FaMapMarkedAlt, FaChartBar } from "react-icons/fa";
+import { GiProgression } from "react-icons/gi";
 import { NavLink } from "react-router-dom";
 
 const MenuFooter = () => {
@@ -32,6 +33,19 @@ const MenuFooter = () => {
           >
             <FaMapMarkedAlt className="text-2xl" />
             <span>Mappe</span>
+          </NavLink>
+          
+           {/* Progressi */}
+           <NavLink
+            to="/progressi"
+            className={({ isActive }) =>
+              `flex flex-col items-center text-sm ${
+                isActive ? "text-white" : "text-white-500"
+              }`
+            }
+          >
+            <GiProgression className="text-2xl" />
+            <span>Progressi</span>
           </NavLink>
         </div>
       </div>
